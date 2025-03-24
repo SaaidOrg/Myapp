@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <script>
+        async function fetchEmployees() {
+            const response = await fetch("http://localhost:3000/employees");
+            const employees = await response.json();
+            const employeeList = document.getElementById("employeeList");
+            employeeList.innerHTML = "";
+
+            employees.forEach(emp => {
+                const li = document.createElement("li");
+                li.textContent = `${emp.name} - ${emp.position} `;
+
+                // Update button
+                const updateButton = document.createElement("button");
+                updateButton.textContent = "Update";
+                updateButton.onclick = () => showUpdateForm(emp);
+
+                // Delete button
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Delete";
+                deleteButton.onclick = async () => {
+                    await fetch(`http://localhost:3000/employees/${emp.id}`, { method: "DELETE" });
+                    fetchEmployees(); // Refresh list
+                };
+
+                li.appendChild(updateButton);
+                li.appendChild(deleteButton);
+                employeeList.appendChild(li);
+            });
+        }
+
+        async function addEmployee() {
+            const name = document.getElementById("name").value;
+            const position = document.getElementById("position").value;
+
+            if (name && position) {
+                await fetch("http://localhost:3000/employees", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, position })
+                });
+                document.getElementById("name").value = "";
+                document.getElementById("position").value = "";
+                fetchEmployees();
+            }
+        }
+
+        async function updateEmployee() {
+            const name = document.getElementById("updateName").value;
+            const position = document.getElementById("updatePosition").value;
+            const employeeId = document.getElementById("updateEmployeeId").value;
+
+            if (name && position && employeeId) {
+                await fetch(`http://localhost:3000/employees/${employeeId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, position })
+                });
+                fetchEmployees(); // Refresh list
+                hideUpdateForm(); // Hide the update form after update
+            }
+        }
+
+        function showUpdateForm(employee) {
+            document.getElementById("updateForm").style.display = "block";
+            document.getElementById("updateName").value = employee.name;
+            document.getElementById("updatePosition").value = employee.position;
+            document.getElementById("updateEmployeeId").value = employee.id;
+        }
+
+        function hideUpdateForm() {
+            document.getElementById("updateForm").style.display = "none";
+        }
+
+        window.onload = fetchEmployees;
+    </script>
+</head>
+<body>
+    <h1>Employee Management</h1>
+
+    <h2>Add New Employee</h2>
+    <input type="text" id="name" placeholder="Employee Name">
+    <input type="text" id="position" placeholder="Position">
+    <button onclick="addEmployee()">Add Employee</button>
+
+    <h2>Employee List</h2>
+    <ul id="employeeList"></ul>
+
+    <h2>Update Employee</h2>
+    <div id="updateForm" style="display:none;">
+        <input type="text" id="updateName" placeholder="Employee Name">
+        <input type="text" id="updatePosition" placeholder="Position">
+        <input type="hidden" id="updateEmployeeId">
+        <button onclick="updateEmployee()">Update</button>
+        <button onclick="hideUpdateForm()">Cancel</button>
+    </div>
+</body>
+</html>
