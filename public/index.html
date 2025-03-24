@@ -8,7 +8,7 @@
         async function fetchEmployees() {
             const response = await fetch("https://52.55.143.44:8443/employees/");
             const employees = await response.json();
-            const employeeList = document.getElementById("employeeList");
+            const employeeList = document.getElementById("employee List");
             employeeList.innerHTML = "";
 
             employees.forEach(emp => {
@@ -51,9 +51,9 @@
         }
 
         async function updateEmployee() {
-            const name = document.getElementById("updateName").value;
-            const position = document.getElementById("updatePosition").value;
-            const employeeId = document.getElementById("updateEmployeeId").value;
+            const name = document.getElementById("update Name").value;
+            const position = document.getElementById("update Position").value;
+            const employeeId = document.getElementById("update EmployeeId").value;
 
             if (name && position && employeeId) {
                 await fetch(`https://52.55.143.44:8443/employees/${employeeId}`, {
