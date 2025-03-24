@@ -13,7 +13,7 @@ npm install
 echo $PRIVATE_KEY > privatekey.pem
 echo $SERVER > server.crt
 
-pm2 start .bin/www --name myapp
+pm2 start .bin/www --name myapp 
 
 
 
