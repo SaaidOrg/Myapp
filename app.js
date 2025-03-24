@@ -8,12 +8,12 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({ origin: '*' })); // Allow cross-origin requests
 
 // Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-const dataFile = 'employees.json';
+const dataFile = path.join(__dirname, 'employees.json'); // Absolute path to employees.json
 
 // Read employees from file
 const getEmployees = () => {
@@ -64,3 +64,15 @@ app.put('/employees/:id', (req, res) => {
 
 // Export the app to be used in bin/www
 module.exports = app;
+
+// Ensure the app is running on the correct port
+const https = require('https');
+const fs = require('fs');
+const sslOptions = {
+  key: fs.readFileSync(path.join(__dirname, 'privatekey.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'server.crt'))
+};
+
+https.createServer(sslOptions, app).listen(8443, () => {
+  console.log('Server started on https://localhost:8443');
+});
