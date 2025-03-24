@@ -5,10 +5,12 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
+
+// Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
-// Serve static files (like index.html) from the 'public' directory
+// Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 const dataFile = 'employees.json';
@@ -60,7 +62,5 @@ app.put('/employees/:id', (req, res) => {
   }
 });
 
-app.listen(80, "0.0.0.0", () => { 
-    console.log("Server running on port 80"); 
-});
-
+// Export the app to be used in bin/www
+module.exports = app;
