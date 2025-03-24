@@ -8,7 +8,7 @@
         async function fetchEmployees() {
             const response = await fetch("https://52.55.143.44:8443/employees/");
             const employees = await response.json();
-            const employeeList = document.getElementById("employee List");
+            const employeeList = document.getElementById("employeeList"); // Fixed ID here
             employeeList.innerHTML = "";
 
             employees.forEach(emp => {
@@ -51,9 +51,9 @@
         }
 
         async function updateEmployee() {
-            const name = document.getElementById("update Name").value;
-            const position = document.getElementById("update Position").value;
-            const employeeId = document.getElementById("update EmployeeId").value;
+            const name = document.getElementById("updateName").value; // Fixed ID here
+            const position = document.getElementById("updatePosition").value; // Fixed ID here
+            const employeeId = document.getElementById("updateEmployeeId").value; // Fixed ID here
 
             if (name && position && employeeId) {
                 await fetch(`https://52.55.143.44:8443/employees/${employeeId}`, {
@@ -89,13 +89,13 @@
     <button onclick="addEmployee()">Add Employee</button>
 
     <h2>Employee List</h2>
-    <ul id="employeeList"></ul>
+    <ul id="employeeList"></ul> <!-- Fixed ID here -->
 
     <h2>Update Employee</h2>
     <div id="updateForm" style="display:none;">
-        <input type="text" id="updateName" placeholder="Employee Name">
-        <input type="text" id="updatePosition" placeholder="Position">
-        <input type="hidden" id="updateEmployeeId">
+        <input type="text" id="updateName" placeholder="Employee Name"> <!-- Fixed ID here -->
+        <input type="text" id="updatePosition" placeholder="Position"> <!-- Fixed ID here -->
+        <input type="hidden" id="updateEmployeeId"> <!-- Fixed ID here -->
         <button onclick="updateEmployee()">Update</button>
         <button onclick="hideUpdateForm()">Cancel</button>
     </div>
