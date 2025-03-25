@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// Serve static files from 'public' directory
+// Serve static files from 'public' director
 app.use(express.static(path.join(__dirname, 'public')));
 
 const dataFile = 'employees.json';
