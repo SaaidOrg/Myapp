@@ -6,11 +6,10 @@ const path = require('path');
 
 const app = express();
 
-// Middleware
+
 app.use(bodyParser.json());
 app.use(cors());
 
-// Serve static files from 'public' direct
 app.use(express.static(path.join(__dirname, 'public')));
 
 const dataFile = 'employees.json';
@@ -62,5 +61,5 @@ app.put('/employees/:id', (req, res) => {
   }
 });
 
-// Export the app to be used in bin/www
+
 module.exports = app;
