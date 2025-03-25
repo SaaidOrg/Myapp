@@ -12,7 +12,8 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public'))); 
 
-const dataFile = 'employees.json';
+const dataFile = '/var/myapp/employees.json';  // Persistent location
+
 
 // Read employees from file
 const getEmployees = () => {
