@@ -9,19 +9,20 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static(path.join(__dirname, 'public'))); 
-
-const dataFile = '/var/myapp/employees.json';  // Persistent location
+const dataFile = '/var/myapp/employees.json';  
 
 
-// Read employees from file
 const getEmployees = () => {
-  if (!fs.existsSync(dataFile)) return [];
-  return JSON.parse(fs.readFileSync(dataFile));
+  if (!fs.existsSync(dataFile)) {
+    fs.writeFileSync(dataFile, JSON.stringify([]));
+  }
+  
+  return JSON.parse(fs.readFileSync(dataFile, 'utf8'));
 };
 
-// Write employees to file
+
 const saveEmployees = (employees) => {
   fs.writeFileSync(dataFile, JSON.stringify(employees, null, 2));
 };
@@ -58,9 +59,8 @@ app.put('/employees/:id', (req, res) => {
     saveEmployees(employees);
     res.json(updatedEmployee);
   } else {
-    res.status(404).json({ message: 'Employee not found' });  
+    res.status(404).json({ message: 'Employee not found' });
   }
 });
-
 
 module.exports = app;
